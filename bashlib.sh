@@ -24,8 +24,7 @@ export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/bashlib/includes"
 # Make susudoio available when using MacOS.
 if [[ "$OSTYPE" == "darwin"* ]]; then
   export BASHLIB_SUSUDOIO_DIR="${BASHLIB_INCLUDES_DIR}/susudoio"
-  [ -d "${BASHLIB_SUSUDOIO_DIR}" ] || mkdir "${BASHLIB_SUSUDOIO_DIR}"
-  if [ -d "${BASHLIB_SUSUDOIO_DIR}" ]; then
+  if [ ! -d "${BASHLIB_SUSUDOIO_DIR}" ]; then
     echo "Installing neutron37 susudoio."
     cd "${BASHLIB_INCLUDES_DIR}"
     git clone https://github.com/neutron37/bashlib.git
