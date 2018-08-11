@@ -51,6 +51,7 @@ export BASHLIB_CURRENT_USER_DEFAULT=$( whoami )
 readonly STYLE_NORMAL=$( tput sgr0 );
 readonly STYLE_BOLD=$( tput bold );
 readonly STYLE_RED=$( tput setaf 1 );
+readonly STYLE_GREEN=$( tput setaf 2 );
 readonly STYLE_MAGENTA=$( tput setaf 5 );
 
 #######################
