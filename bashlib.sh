@@ -41,7 +41,7 @@ bashlib::members() {
 ## Vars ##
 ##########
 export BASHLIB_ADMIN_USER_DEFAULT=$( bashlib::members admin | grep -v root | head -n1 )
-export BASHLIB_TARGET_USER_DEFAULT=$( whoami )
+export BASHLIB_CURRENT_USER_DEFAULT=$( whoami )
 
 #################
 ## Text styles ##
