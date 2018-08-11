@@ -26,7 +26,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     cd "${BASHLIB_INCLUDES_DIR}"
     git clone https://github.com/neutron37/susudoio.git
   fi
-  export PATH="${BASHLIB_SUSUDOIO_DIR}/susudoio:${PATH}"
+  export PATH="${BASHLIB_SUSUDOIO_DIR}:${PATH}"
 fi
 
 bashlib::members() {
