@@ -29,6 +29,20 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export PATH="${BASHLIB_SUSUDOIO_DIR}/susudoio:${PATH}"
 fi
 
+bashlib::members() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    dscl . -list /Users | while read user; do printf "$user ";
+      dsmemberutil checkmembership -U "$user" -G "$*";
+    done | grep "is a member" | cut -d " " -f 1;
+  fi
+};
+
+##########
+## Vars ##
+##########
+export BASHLIB_ADMIN_USER_DEFAULT=$( bashlib::members admin | grep -v root | head -n1 )
+export BASHLIB_TARGET_USER_DEFAULT=$( whoami )
+
 #################
 ## Text styles ##
 #################
