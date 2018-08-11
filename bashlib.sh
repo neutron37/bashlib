@@ -31,20 +31,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export PATH="${BASHLIB_SUSUDOIO_DIR}:${PATH}"
 fi
 
-bashlib::members() {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    dscl . -list /Users | while read user; do printf "$user ";
-      dsmemberutil checkmembership -U "$user" -G "$*";
-    done | grep "is a member" | cut -d " " -f 1;
-  fi
-};
-
-##########
-## Vars ##
-##########
-export BASHLIB_ADMIN_USER_DEFAULT=$( bashlib::members admin | grep -v root | head -n1 )
-export BASHLIB_CURRENT_USER_DEFAULT=$( whoami )
-
 #################
 ## Text styles ##
 #################
@@ -96,3 +82,36 @@ bashlib::msg_stderr() {
     echo "${STYLE_RED}$@${STYLE_NORMAL}" >&2
   fi
 }
+
+bashlib::members() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    dscl . -list /Users | while read user; do printf "$user ";
+      dsmemberutil checkmembership -U "$user" -G "$*";
+    done | grep "is a member" | cut -d " " -f 1;
+  fi
+};
+
+export BASHLIB_ADMIN_USER_DEFAULT=$( bashlib::members admin | grep -v root | head -n1 )
+export BASHLIB_CURRENT_USER_DEFAULT=$( whoami )
+
+bashlib::run_as_root() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [ "${BASHLIB_CURRENT_USER_DEFAULT}" == "${BASHLIB_ADMIN_USER_DEFAULT}" ]; then
+      sudo "${@}"
+    else
+      susudoio "${@}"
+    fi
+  fi
+};
+
+bashlib::run_as_admin() {
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    if [ "${BASHLIB_CURRENT_USER_DEFAULT}" == "${BASHLIB_ADMIN_USER_DEFAULT}" ]; then
+      "${@}"
+    else
+      susudoio -a "${@}"
+    fi
+  else
+    bashlib::msg_stderr "Unsupported \$OSTYPE: $OSTYPE"
+  fi
+};
