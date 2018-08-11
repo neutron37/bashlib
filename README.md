@@ -1,5 +1,7 @@
 # bashlib
 
+## Installation
+
 Simply add the following lines to the beginning of your script.
 
 ```
@@ -32,3 +34,15 @@ source "${BASHLIB_DIR}/bashlib.sh"
 ## Export Project Path - Customize the following line for your project!
 export BASHLIB_PROJECT_DIR=$( cd -P $INCLUDES_DIR/.. && pwd )
 ```
+
+## Useful commands
+
+The susudoio command is autoinstalled and added to the path.
+
+## Useful variables
+
+$BASHLIB_THIS_DIR
+$BASHLIB_INCLUDES_DIR
+$BASHLIB_ADMIN_USER_DEFAULT
+$BASHLIB_CURRENT_USER_DEFAULT
+$BASHLIB_PROJECT_DIR
