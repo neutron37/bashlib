@@ -14,6 +14,9 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -o errtrace
 set -o pipefail
 
+# Include project specific src directory.
+export BASHLIB_SRC_DIR="${BASHLIB_THIS_DIR}/src"
+
 # Ensure includes directory exists and is exported.
 export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/bashlib/includes"
 [ -d "${BASHLIB_INCLUDES_DIR}" ] || mkdir "${BASHLIB_INCLUDES_DIR}"
