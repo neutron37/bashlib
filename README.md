@@ -7,11 +7,7 @@ Simply add the following lines to the beginning of your script.
 # START bashlib boilerplate.                                     #
 # See https://github.com/neutron37/bashlib/blob/master/README.md #
 ##################################################################
-set -o nounset
-set -o errexit
-trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
-set -o errtrace
-set -o pipefail
+set -euo pipefail
 BASHLIB_SOURCE="${BASH_SOURCE[0]}"
 while [ -h "${BASHLIB_SOURCE}" ]; do
   # resolve $SOURCE until the file is no longer a symlink
