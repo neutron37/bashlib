@@ -63,6 +63,8 @@ bashlib::exit_fail() {
   exit 37;
 }
 
+trap 'bashlib::exit_fail "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
+
 # abrt: prints sussess message and exits
 # arg1: message
 bashlib::exit_success() {
