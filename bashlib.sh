@@ -26,6 +26,7 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     echo "Installing neutron37 susudoio."
     cd "${BASHLIB_INCLUDES_DIR}"
     git clone https://github.com/neutron37/susudoio.git
+    echo "------------------------------------------------------------"
   fi
   export PATH="${BASHLIB_SUSUDOIO_DIR}:${PATH}"
 fi
