@@ -18,7 +18,7 @@ set -o pipefail
 export BASHLIB_SRC_DIR="${BASHLIB_THIS_DIR}/src"
 
 # Ensure includes directory exists and is exported.
-export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/bashlib/includes"
+export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/includes"
 [ -d "${BASHLIB_INCLUDES_DIR}" ] || mkdir "${BASHLIB_INCLUDES_DIR}"
 
 # Make susudoio available when using MacOS.
