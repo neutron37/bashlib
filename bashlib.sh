@@ -22,6 +22,7 @@ export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/includes"
 if [[ "$OSTYPE" == "darwin"* ]]; then
   export BASHLIB_SUSUDOIO_DIR="${BASHLIB_INCLUDES_DIR}/susudoio"
   if [ ! -d "${BASHLIB_SUSUDOIO_DIR}" ]; then
+    echo "------------------------------------------------------------"
     echo "Installing neutron37 susudoio."
     cd "${BASHLIB_INCLUDES_DIR}"
     git clone https://github.com/neutron37/susudoio.git
