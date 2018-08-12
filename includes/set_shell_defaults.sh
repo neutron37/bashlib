@@ -39,7 +39,6 @@ bashlib::print_cmd   '[ -f ~/.profile ] || touch ~/.profile'
 bashlib::print_cmd   '[ -f ~/.config/fish/config.fish ] || touch ~/.config/fish/config.fish'
                       [ -f ~/.config/fish/config.fish ] || touch ~/.config/fish/config.fish
 
-
 bashlib::msg_stdout  "Ensure \$PATH is set appropriately for both bash and fish."
 
 # Ensure path is included
