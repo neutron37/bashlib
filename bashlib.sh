@@ -12,24 +12,12 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -euo pipefail
 
 # Include project specific src directory.
-export BASHLIB_SRC_DIR="${BASHLIB_THIS_DIR}/src"
+export BASHLIB_SRC_DIR=$( cd -P "${BASHLIB_DIR}/../src" && pwd )
 
 # Ensure includes directory exists and is exported.
 export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/includes"
-[ -d "${BASHLIB_INCLUDES_DIR}" ] || mkdir "${BASHLIB_INCLUDES_DIR}"
 
-# Make susudoio available when using MacOS.
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  export BASHLIB_SUSUDOIO_DIR="${BASHLIB_INCLUDES_DIR}/susudoio"
-  if [ ! -d "${BASHLIB_SUSUDOIO_DIR}" ]; then
-    echo "------------------------------------------------------------"
-    echo "Installing neutron37 susudoio."
-    cd "${BASHLIB_INCLUDES_DIR}"
-    git clone https://github.com/neutron37/susudoio.git
-    echo "------------------------------------------------------------"
-  fi
-  export PATH="${BASHLIB_SUSUDOIO_DIR}:${PATH}"
-fi
+[ -d "${BASHLIB_INCLUDES_DIR}" ] || mkdir "${BASHLIB_INCLUDES_DIR}"
 
 #################
 ## Text styles ##
@@ -83,6 +71,17 @@ bashlib::msg_stderr() {
   fi
 }
 
+# Ensure consistent $BASHLIB_PROJECT_DIR
+if [ -z ${BASHLIB_PROJECT_DIR+x} ]; then
+  if [ -f "${BASHLIB_DIR}/project_dir.data" ]; then
+    BASHLIB_PROJECT_DIR=$( cat "${BASHLIB_DIR}/project_dir.data" )
+  else
+    bashlib::exit_fail "You must set \$BASHLIB_PROJECT_DIR in your main script."
+  fi
+else
+  echo -n "${BASHLIB_PROJECT_DIR}" > "${BASHLIB_DIR}/project_dir.data"
+fi
+
 bashlib::members() {
   if [[ "$OSTYPE" == "darwin"* ]]; then
     dscl . -list /Users | while read user; do printf "$user ";
@@ -94,24 +93,16 @@ bashlib::members() {
 export BASHLIB_ADMIN_USER_DEFAULT=$( bashlib::members admin | grep -v root | head -n1 )
 export BASHLIB_CURRENT_USER_DEFAULT=$( whoami )
 
-bashlib::run_as_root() {
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    if [ "${BASHLIB_CURRENT_USER_DEFAULT}" == "${BASHLIB_ADMIN_USER_DEFAULT}" ]; then
-      sudo "${@}"
-    else
-      susudoio "${@}"
-    fi
-  fi
-};
+bashlib::print_cmd() {
+  echo "${STYLE_BOLD}+ ${@}${STYLE_NORMAL}"
+}
 
-bashlib::run_as_admin() {
+bashlib::check_admin() {
   if [[ "$OSTYPE" == "darwin"* ]]; then
-    if [ "${BASHLIB_CURRENT_USER_DEFAULT}" == "${BASHLIB_ADMIN_USER_DEFAULT}" ]; then
-      "${@}"
-    else
-      susudoio -a "${@}"
+    if [ "${BASHLIB_CURRENT_USER_DEFAULT}" != "${BASHLIB_ADMIN_USER_DEFAULT}" ]; then
+      bashlib::exit_fail "Must run as admin user."
     fi
   else
-    bashlib::msg_stderr "Unsupported \$OSTYPE: $OSTYPE"
+    bashlib::exit_fail "Unsupported \$OSTYPE: $OSTYPE"
   fi
 };
