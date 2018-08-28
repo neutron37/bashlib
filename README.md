@@ -35,6 +35,13 @@ source "${BASHLIB_DIR}/bashlib.sh"
 export BASHLIB_PROJECT_DIR=$( cd -P $INCLUDES_DIR/.. && pwd )
 ```
 
+## Optional installations
+
+```
+source "${BASHLIB_DIR}/macos_install_brew.sh"
+source "${BASHLIB_DIR}/macos_install_susudoio.sh"
+```
+
 ## Useful commands
 
 The susudoio command is autoinstalled and added to the path.
