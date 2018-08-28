@@ -20,20 +20,22 @@ source "${BASHLIB_DIR}/bashlib.sh"
 # END bashlib include boilerplate.                               #
 ##################################################################
 
-# Make brew available if it's not installed already.
-bashlib::msg_stdout  "------------------------------------------------------------"
-bashlib::msg_stdout  "Installing neutron37 susudoio."
+# Make susudoio available when using MacOS.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  bashlib::msg_stdout  "------------------------------------------------------------"
+  bashlib::msg_stdout  "Installing neutron37 susudoio."
+  
+  # Ensure it's checked out
+  if [ ! -d ~/.local/share/susudoio ]; then
+    bashlib::print_cmd   'cd ~/.local/share && git clone git@github.com:neutron37/susudoio.git'
+    cd ~/.local/share && git clone git@github.com:neutron37/susudoio.git
+  fi
 
-# Ensure it's checked out
-if [ ! -d ~/.local/share/susudoio ]; then
-  bashlib::print_cmd   'cd ~/.local/share && git clone git@github.com:neutron37/susudoio.git'
-  cd ~/.local/share && git clone git@github.com:neutron37/susudoio.git
-fi
-
-# Create symlink
-if [ ! -f ~/.local/bin/susudoio ]; then
-  bashlib::print_cmd   'ln -s ~/.local/share/susudoio/susudoio ~/.local/bin/'
-  ln -s ~/.local/share/susudoio/susudoio ~/.local/bin/
+  # Create symlink
+  if [ ! -f ~/.local/bin/susudoio ]; then
+    bashlib::print_cmd   'ln -s ~/.local/share/susudoio/susudoio ~/.local/bin/'
+    ln -s ~/.local/share/susudoio/susudoio ~/.local/bin/
+  fi
 fi
 
 bashlib::msg_stdout  "------------------------------------------------------------"
