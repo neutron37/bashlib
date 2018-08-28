@@ -43,10 +43,6 @@ source "${BASHLIB_DIR}/macos_install_brew.sh"
 source "${BASHLIB_DIR}/macos_install_ansible.sh"
 ```
 
-## Useful commands
-
-The susudoio command is autoinstalled and added to the path.
-
 ## Useful variables
 
 * $BASHLIB_THIS_DIR
