@@ -12,12 +12,8 @@ trap 'echo "Aborting due to errexit on line $LINENO. Exit code: $?" >&2' ERR
 set -euo pipefail
 
 # Include project specific src directory.
-export BASHLIB_SRC_DIR=$( cd -P "${BASHLIB_DIR}/../src" && pwd )
-
-# Ensure includes directory exists and is exported.
-export BASHLIB_INCLUDES_DIR="${BASHLIB_DIR}/includes"
-
-[ -d "${BASHLIB_INCLUDES_DIR}" ] || mkdir "${BASHLIB_INCLUDES_DIR}"
+export BASHLIB_SRC_DIR=$( cd -P "${BASHLIB_DIR}/.." && pwd )
+export BASHLIB_PROJECT_DIR=$( cd -P "${BASHLIB_DIR}/../.." && pwd )
 
 #################
 ## Text styles ##
@@ -90,20 +86,6 @@ bashlib::msg_stderr() {
     echo "${STYLE_RED}$@${STYLE_NORMAL}" >&2
   fi
 }
-
-# Ensure consistent $BASHLIB_PROJECT_DIR
-# It's probably a bad idea to save this to the same place in /tmp every run!
-# @TODO FIX this somehow.
-if [ -z ${BASHLIB_PROJECT_DIR+x} ]; then
-  if [ -f "/tmp/project_dir.data" ]; then
-    BASHLIB_PROJECT_DIR=$( cat "/tmp/project_dir.data" )
-  else
-    bashlib::exit_fail "You must set \$BASHLIB_PROJECT_DIR in your main script."
-  fi
-else
-  echo -n "${BASHLIB_PROJECT_DIR}" > "/tmp/project_dir.data"
-  chmod a+r "/tmp/project_dir.data"
-fi
 
 bashlib::members() {
   if [[ "$OSTYPE" == "darwin"* ]]; then
